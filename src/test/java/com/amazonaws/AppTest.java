@@ -45,7 +45,7 @@ public class AppTest {
   @Test
   public void saveOrUpdateEvent() {
     SaveOrUpdateEvent app = new SaveOrUpdateEvent();
-    Match brazil = new Match("Brazil", new Long(20190603));
+    Match brazil = new Match("England", new Long(20190614));
     try {
       app.handleRequest(brazil, null);
     } catch (IllegalArgumentException e) {

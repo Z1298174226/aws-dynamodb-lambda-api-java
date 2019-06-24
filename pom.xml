@@ -38,6 +38,21 @@
           <version>4.12</version>
           <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>6.7.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/vc.inreach.aws/aws-signing-request-interceptor -->
+        <dependency>
+            <groupId>vc.inreach.aws</groupId>
+            <artifactId>aws-signing-request-interceptor</artifactId>
+            <version>0.0.22</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
@@ -51,8 +66,6 @@
               <shadedArtifactAttached>true</shadedArtifactAttached>
               <shadedClassifierName>aws</shadedClassifierName>
               <relocations>
-                  <!--Default relocations of-->
-                  <!--http://central.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.301/aws-java-sdk-bundle-1.11.301.pom-->
                   <relocation>
                       <pattern>com.fasterxml.jackson</pattern>
                       <shadedPattern>com.amazonaws.thirdparty.jackson</shadedPattern>

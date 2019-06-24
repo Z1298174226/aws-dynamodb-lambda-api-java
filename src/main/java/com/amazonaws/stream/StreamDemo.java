@@ -3,7 +3,6 @@ package com.amazonaws.stream;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.client.builder.AwsClientBuilder;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBStreams;
@@ -19,17 +18,16 @@ public class StreamDemo {
         AmazonDynamoDB dynamoDBClient = AmazonDynamoDBClientBuilder
                 .standard()
                 .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration("http://localhost:4569", "us-east-1"))
+                    new AwsClientBuilder.EndpointConfiguration("http://localhost:4569", "us-east-1"))
                 .withCredentials(new DefaultAWSCredentialsProviderChain())
                 .build();
 
-        AmazonDynamoDBStreams streamsClient =
-                AmazonDynamoDBStreamsClientBuilder
-                        .standard()
-                        .withEndpointConfiguration(
-                            new AwsClientBuilder.EndpointConfiguration("http://localhost:4570", "us-east-1"))
-                        .withCredentials(new DefaultAWSCredentialsProviderChain())
-                        .build();
+        AmazonDynamoDBStreams streamsClient = AmazonDynamoDBStreamsClientBuilder
+                .standard()
+                .withEndpointConfiguration(
+                    new AwsClientBuilder.EndpointConfiguration("http://localhost:4570", "us-east-1"))
+                .withCredentials(new DefaultAWSCredentialsProviderChain())
+                .build();
 
         // Create a table, with a stream enabled
         String tableName = "TestTableForStreams";
@@ -78,7 +76,7 @@ public class StreamDemo {
         // Generate write activity in the table
 
         System.out.println("Performing write activities on " + tableName);
-        int maxItemCount = 100;
+        int maxItemCount = 10;
         for (Integer i = 1; i <= maxItemCount; i++) {
             System.out.println("Processing item " + i + " of " + maxItemCount);
 
@@ -100,7 +98,7 @@ public class StreamDemo {
             dynamoDBClient.updateItem(tableName, key, attributeUpdates);
 
             // Delete the item
-            dynamoDBClient.deleteItem(tableName, key);
+     //       dynamoDBClient.deleteItem(tableName, key);
         }
 
         // Get all the shard IDs from the stream.  Note that DescribeStream returns
@@ -108,6 +106,7 @@ public class StreamDemo {
         String lastEvaluatedShardId = null;
 
         do {
+            System.out.println(streamsClient);
             DescribeStreamResult describeStreamResult = streamsClient.describeStream(
                     new DescribeStreamRequest()
                             .withStreamArn(streamArn)

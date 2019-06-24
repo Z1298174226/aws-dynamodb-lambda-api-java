@@ -20,6 +20,8 @@ public class MatchDaoImpl implements MatchDao {
 
     @Override
     public List<Match> findAllMatches() {
+        Random random = new Random();
+        mapper.save(new Match("Japan", new Long(Long.valueOf("201906" + random.nextInt(30)))));
         return mapper.scan(Match.class, new DynamoDBScanExpression());
     }
 
@@ -32,19 +34,19 @@ public class MatchDaoImpl implements MatchDao {
         homeQuery.setHashKeyValues(eventKey);
         List<Match> homeEvents = mapper.query(Match.class, homeQuery);
 
-//        Map<String, AttributeValue> eav = new HashMap<>();
-//        eav.put(":v1", new AttributeValue().withS(team));
-//        DynamoDBQueryExpression<Match> awayQuery = new DynamoDBQueryExpression<Match>()
-//                .withIndexName(Match.AWAY_TEAM_INDEX)
-//                .withConsistentRead(false)
-//                .withKeyConditionExpression("awayTeam = :v1")
-//                .withExpressionAttributeValues(eav);
+        Map<String, AttributeValue> eav = new HashMap<>();
+        eav.put(":v1", new AttributeValue().withS(team));
+        DynamoDBQueryExpression<Match> awayQuery = new DynamoDBQueryExpression<Match>()
+                .withIndexName(Match.AWAY_TEAM_INDEX)
+                .withConsistentRead(false)
+                .withKeyConditionExpression("homeTeam = :v1")
+                .withExpressionAttributeValues(eav);
 
-      //  List<Match> awayEvents = mapper.query(Match.class, awayQuery);
+        List<Match> awayEvents = mapper.query(Match.class, awayQuery);
 
         List<Match> allEvents = new LinkedList<>();
         allEvents.addAll(homeEvents);
-     //   allEvents.addAll(awayEvents);
+        allEvents.addAll(awayEvents);
         allEvents.sort( (e1, e2) -> e1.getMatchDate() <= e2.getMatchDate() ? -1 : 1 );
 
         return allEvents;
