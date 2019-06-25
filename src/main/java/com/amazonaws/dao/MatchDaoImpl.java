@@ -20,8 +20,6 @@ public class MatchDaoImpl implements MatchDao {
 
     @Override
     public List<Match> findAllMatches() {
-        Random random = new Random();
-        mapper.save(new Match("Japan", new Long(Long.valueOf("201906" + random.nextInt(30)))));
         return mapper.scan(Match.class, new DynamoDBScanExpression());
     }
 

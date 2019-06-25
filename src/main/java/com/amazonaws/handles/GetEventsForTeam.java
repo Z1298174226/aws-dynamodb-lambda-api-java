@@ -8,6 +8,7 @@ import com.amazonaws.pojo.Team;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.util.Consts;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
@@ -24,8 +25,10 @@ public class GetEventsForTeam implements RequestHandler<Object, Object> {
 
     @Override
     public Object handleRequest(Object input, Context context) {
-        Team team = (Team) input;
-        if (null == team || team.getTeamName().isEmpty() || team.getTeamName().equals(Consts.UNDIFINED)) {
+        JSONObject jsonObject = JSONObject.fromObject(input);
+        //Team team = (Team) JSONObject.toBean(jsonObject.getJSONObject("pathParameters"), Team.class);
+        Team team = new Team(jsonObject.getJSONObject("pathParameters").getString("homeTeam"));
+        if  (null == team || team.getTeamName().isEmpty() || team.getTeamName().equals(Consts.UNDIFINED)) {
             log.error("GetEventsForTeam received null or empty team name");
             throw new IllegalArgumentException("Team name cannot be null or empty");
         }
@@ -35,6 +38,7 @@ public class GetEventsForTeam implements RequestHandler<Object, Object> {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
         log.info("GetEventsForTeam invoked for team with name = " + name);
         List<Match> events = new ArrayList<>();
         events.addAll(eventDao.findMatchByTeam(name));
@@ -44,7 +48,7 @@ public class GetEventsForTeam implements RequestHandler<Object, Object> {
         headers.put("X-Custom-Header", "application/json");
         StringBuilder sb = new StringBuilder();
         for (Match match : events) {
-            sb.append(match + " ");
+            sb.append(match + "\n");
         }
         String output = String.format("{ \"Match\": \"%s\"}", sb.toString());
         return new GatewayResponse(output, headers, 200);
