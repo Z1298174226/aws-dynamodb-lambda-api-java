@@ -9,7 +9,8 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.util.Consts;
 import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GetEventsForTeam implements RequestHandler<Object, Object> {
-    private static final Logger log = Logger.getLogger(GetEventsForTeam.class);
+    private static final Logger log = LoggerFactory.getLogger(GetEventsForTeam.class);
 
     private static final MatchDao eventDao = MatchDaoImpl.instance();
 

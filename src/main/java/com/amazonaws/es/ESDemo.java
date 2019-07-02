@@ -11,6 +11,8 @@ import org.elasticsearch.client.RestHighLevelClient;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ESDemo {
     private final static String SERVICENAME = "es";
@@ -21,16 +23,18 @@ public class ESDemo {
     private final static String ID = "1";
 
     public static void main(String[] args) throws IOException {
+        Logger log = LoggerFactory.getLogger(ESDemo.class);
         RestHighLevelClient esClient = esClient(SERVICENAME, REGION);
 
         // Create the document as a hash map
         Map<String, Object> document = new HashMap<>();
-       // document.put("homeTeam", "German");
-       // document.put("eventDate", new Long(20190622));
+        document.put("homeTeam", "German");
+        document.put("eventDate", new Long(20190622));
 
         // Form the indexing request, send it, and print the response
         IndexRequest request = new IndexRequest(INDEX, TYPE, ID).source(document);
         IndexResponse response = esClient.index(request, RequestOptions.DEFAULT);
+        log.info(response.toString());
         System.out.println(response.toString());
     }
 

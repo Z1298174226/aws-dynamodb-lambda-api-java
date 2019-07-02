@@ -46,7 +46,6 @@ public class MatchDaoImpl implements MatchDao {
         allEvents.addAll(homeEvents);
         allEvents.addAll(awayEvents);
         allEvents.sort( (e1, e2) -> e1.getMatchDate() <= e2.getMatchDate() ? -1 : 1 );
-
         return allEvents;
     }
 

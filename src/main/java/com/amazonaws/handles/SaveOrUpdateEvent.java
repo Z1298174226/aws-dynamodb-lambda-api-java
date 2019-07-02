@@ -7,14 +7,14 @@ import com.amazonaws.pojo.Match;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SaveOrUpdateEvent implements RequestHandler<Object, Object> {
 
-    private static final Logger log = Logger.getLogger(SaveOrUpdateEvent.class);
+    private static final Logger log = LoggerFactory.getLogger(SaveOrUpdateEvent.class);
 
     private static final MatchDao eventDao = MatchDaoImpl.instance();
 

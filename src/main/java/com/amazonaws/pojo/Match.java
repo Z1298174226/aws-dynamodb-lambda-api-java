@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Match implements Serializable {
 
     private static final long serialVersionUID = -8243145429438016232L;
-    public static final String AWAY_TEAM_INDEX = "AwayTeam-Index";
+    public static final String AWAY_TEAM_INDEX = "AwayTeam";
 
     @DynamoDBAttribute
     private Long matchId;
